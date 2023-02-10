@@ -1,13 +1,8 @@
 import pygame
-import random
 
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-WHITE = (255, 255, 255)
-colors = [(255, 0, 0),(0, 255, 0),(0, 0, 255),(255, 255, 255)]
 class Paddle:
 
-    def __init__(self, x, y, width, height, color=random.choice(colors), VEL = 4):
+    def __init__(self, x, y, width, height, color=(255,255,255), VEL = 4):
         self.x = self.original_x = x
         self.y = self.original_y = y
         self.width = width

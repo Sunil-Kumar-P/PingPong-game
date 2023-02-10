@@ -114,13 +114,15 @@ while True:
     #mediapipe
     success, img = cap.read()
     img = detector.findHands(img, Leftcolor, Rightcolor)
-    detector.findPosition(img, left_paddle, right_paddle)
+    detector.findPosition(img, left_paddle, right_paddle, Leftcolor, Rightcolor)
     cTime = time.time()
     fps = 1 / (cTime - pTime)
     pTime = cTime
-    cv2.putText(img, str(int(fps)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3,
+    flipimg = cv2.flip(img,1)
+    cv2.line(flipimg,(320,0),(320,480),(0,0,0),5)
+    cv2.putText(flipimg, str(int(fps)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3,
                 (255, 0, 255), 3)
-    cv2.imshow("Image", img)
+    cv2.imshow("Image", flipimg)
     if cv2.waitKey(5) & 0xFF == ord('q'):
         break
     
