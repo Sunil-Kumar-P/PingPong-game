@@ -1,5 +1,8 @@
 # PingPong_Using_MediaPipe
 PingPong Using MediaPipe
 
-Requirements
+Requirements :
 Pygame, MediaPipe 
+## pip install mediapipe pygame 
+to run the game 
+## python main.py
