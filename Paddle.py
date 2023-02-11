@@ -14,7 +14,8 @@ class Paddle:
         pygame.draw.rect(
             win, self.color, (self.x, self.y, self.width, self.height))
 
-    def move(self, up=True):
+    def move(self, up=True, VEL=4):
+        self.VEL = VEL
         if up and self.y > 10:
             self.y -= self.VEL
         elif self.y < (self.original_y*2)-10 and up == False:

@@ -28,7 +28,7 @@ class handDetector():
 
         return img
     #To To Perform Movements
-    def findPosition(self, img, left_paddle=None, right_paddle=None, Leftcolor=(255, 0, 0), Rightcolor=(0, 0, 255),draw=True):
+    def findPosition(self, img, left_paddle=None, right_paddle=None, Leftcolor=(255, 0, 0), Rightcolor=(0, 0, 255),vel=4, draw=True):
         lcolor = Leftcolor[::-1]
         rcolor = Rightcolor[::-1]
         if self.results.multi_hand_landmarks:
@@ -42,10 +42,10 @@ class handDetector():
                         if id==9:
                             if lm.y < 0.4:
                                 # print("Left player to up")
-                                left_paddle.move(up=True)
+                                left_paddle.move(up=True, VEL=vel)
                             elif lm.y >0.6:
                                 # print("Left player to down")  
-                                left_paddle.move(up=False)
+                                left_paddle.move(up=False, VEL=vel)
                           
                     else:
                         h, w, c = img.shape
@@ -56,9 +56,9 @@ class handDetector():
                         if id==9:
                             if lm.y < 0.4:
                                 # print("right player to up")
-                                right_paddle.move(up=True)
+                                right_paddle.move(up=True, VEL=vel)
                             elif lm.y >0.6:
                                 # print("right player to down")
-                                right_paddle.move(up=False)
+                                right_paddle.move(up=False, VEL=vel)
                             
             

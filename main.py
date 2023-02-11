@@ -19,6 +19,7 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+#velocity or speed
 VEL = 4
 colors = [(255, 0, 0),(0, 255, 0),(0, 0, 255),(0, 255, 255), (255, 0, 255), (255, 255, 0)]
 PADDLE_WIDTH, PADDLE_HEIGHT = 20, 100
@@ -26,7 +27,7 @@ BALL_RADIUS = 7
 SCORE_FONT = pygame.font.SysFont("comicsans", 50)
 WINNING_SCORE = 10
 Leftcolor = random.choice(colors)
-Rightcolor = random.choice(colors)
+Rightcolor = random.choice(list(filter(lambda color: color != Leftcolor, colors)))
 
 clock = pygame.time.Clock()
 
@@ -90,16 +91,16 @@ def handle_collision(ball, left_paddle, right_paddle):
                 ball.y_vel = -1 * y_vel
 
 
-def handle_paddle_movement(keys, left_paddle, right_paddle):
+def handle_paddle_movement(keys, left_paddle, right_paddle, vel=4):
     if keys[pygame.K_w] and left_paddle.y - left_paddle.VEL >= 0:
-        left_paddle.move(up=True)
+        left_paddle.move(up=True, VEL=vel)
     if keys[pygame.K_s] and left_paddle.y + left_paddle.VEL + left_paddle.height <= HEIGHT:
-        left_paddle.move(up=False)
+        left_paddle.move(up=False, VEL=vel)
 
     if keys[pygame.K_UP] and right_paddle.y - right_paddle.VEL >= 0:
-        right_paddle.move(up=True)
+        right_paddle.move(up=True, VEL=vel)
     if keys[pygame.K_DOWN] and right_paddle.y + right_paddle.VEL + right_paddle.height <= HEIGHT:
-        right_paddle.move(up=False)
+        right_paddle.move(up=False, VEL=vel)
 
 
 #MediaPipe Initialization
@@ -113,11 +114,17 @@ detector = handDetector()
 while True:
     #mediapipe
     success, img = cap.read()
-    img = detector.findHands(img, Leftcolor, Rightcolor)
-    detector.findPosition(img, left_paddle, right_paddle, Leftcolor, Rightcolor)
     cTime = time.time()
     fps = 1 / (cTime - pTime)
     pTime = cTime
+    if fps<10:
+        VEL = 20
+    elif fps < 20 and fps > 10:
+        VEL = 10
+    else :
+        VEL = 4
+    img = detector.findHands(img, Leftcolor, Rightcolor)
+    detector.findPosition(img, left_paddle, right_paddle, Leftcolor, Rightcolor, VEL)
     flipimg = cv2.flip(img,1)
     cv2.line(flipimg,(320,0),(320,480),(0,0,0),5)
     cv2.putText(flipimg, str(int(fps)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3,
@@ -139,7 +146,7 @@ while True:
     handle_paddle_movement(keys, left_paddle, right_paddle)
     detector.findPosition(img, left_paddle, right_paddle, Leftcolor, Rightcolor)
 
-    ball.move()
+    ball.move(VEL)
     handle_collision(ball, left_paddle, right_paddle)
 
     if ball.x < 0:

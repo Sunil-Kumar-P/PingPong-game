@@ -1,9 +1,10 @@
 import pygame
 
 WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
 
 class Ball:
-    MAX_VEL = 5
+    MAX_VEL = 15
     COLOR = WHITE
 
     def __init__(self, x, y, radius):
@@ -16,7 +17,7 @@ class Ball:
     def draw(self, win):
         pygame.draw.circle(win, self.COLOR, (self.x, self.y), self.radius)
 
-    def move(self):
+    def move(self, Vel):
         self.x += self.x_vel
         self.y += self.y_vel
 
