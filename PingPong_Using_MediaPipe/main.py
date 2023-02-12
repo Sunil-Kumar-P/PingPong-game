@@ -1,5 +1,4 @@
 import cv2
-import mediapipe as mp
 import pygame
 import time
 import random
@@ -35,7 +34,7 @@ left_paddle = Paddle(10, HEIGHT//2 - PADDLE_HEIGHT //
                         2, PADDLE_WIDTH, PADDLE_HEIGHT, Leftcolor)
 right_paddle = Paddle(WIDTH - 10 - PADDLE_WIDTH, HEIGHT //
                         2 - PADDLE_HEIGHT//2, PADDLE_WIDTH, PADDLE_HEIGHT, Rightcolor)
-ball = Ball(WIDTH // 2, HEIGHT // 2, BALL_RADIUS)
+ball = Ball(WIDTH // 2, HEIGHT // 2, BALL_RADIUS, VEL)
 
 left_score = 0
 right_score = 0
@@ -110,7 +109,7 @@ cap = cv2.VideoCapture(0)
 pTime = 0
 cTime = 0
 detector = handDetector()
-
+i = 0
 while True:
     #mediapipe
     success, img = cap.read()
@@ -119,8 +118,14 @@ while True:
     pTime = cTime
     if fps<10:
         VEL = 20
+        if(i<1):
+            ball.x_vel=VEL -4
+            i+=1
     elif fps < 20 and fps > 10:
-        VEL = 10
+        VEL = 10 - 2
+        if(i<1):
+            ball.x_vel=10
+            i+=1
     else :
         VEL = 4
     img = detector.findHands(img, Leftcolor, Rightcolor)
